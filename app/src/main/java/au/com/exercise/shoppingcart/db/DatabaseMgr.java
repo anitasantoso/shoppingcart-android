@@ -8,6 +8,8 @@ import java.util.List;
 
 import au.com.exercise.shoppingcart.data.Category;
 import au.com.exercise.shoppingcart.data.Product;
+import au.com.exercise.shoppingcart.data.ShoppingCart;
+import au.com.exercise.shoppingcart.data.User;
 
 /**
  * Created by Anita on 5/10/2014.
@@ -58,6 +60,51 @@ public class DatabaseMgr {
         return categories;
     }
 
+    public ShoppingCart getShoppingCart(User user) {
+        ShoppingCart cart = null;
+        try {
+            List<ShoppingCart> carts = getHelper().getShoppingCartDao().queryForEq("user_id", user.getUserId());
+            if(carts != null && carts.size() > 0) {
+                cart = carts.get(0);
+            }
+        } catch (SQLException e) {
+        }
+        return cart;
+    }
+
+    public boolean initCart(ShoppingCart cart) {
+        try {
+            getHelper().getShoppingCartDao().create(cart);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public User getUser(String deviceId) {
+        User user = null;
+        try {
+            List<User> users = getHelper().getUserDao().queryForEq("device_id", deviceId);
+            if(users != null && users.size() > 0) {
+                user = users.get(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public boolean createUser(User user) {
+        try {
+            getHelper().getUserDao().create(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public boolean addProducts(List<Product> products) {
         for (Product product : products) {
             try {
@@ -78,6 +125,16 @@ public class DatabaseMgr {
             e.printStackTrace();
         }
         return products;
+    }
+
+    public Product getProduct(int productId) {
+        Product product = null;
+        try {
+            product = getHelper().getProductDao().queryForId(productId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 
     public List<Product> getProducts(int categoryId) {

@@ -1,6 +1,7 @@
 package au.com.exercise.shoppingcart.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,9 @@ public class ProductsFragment extends Fragment {
     int categoryId;
 
     @ViewById
+    TextView categoryTextView;
+
+    @ViewById
     GridView prodGridView;
 
     public static ProductsFragment newInstance(int categoryId) {
@@ -52,6 +56,10 @@ public class ProductsFragment extends Fragment {
     @AfterViews
     void setupViews() {
         final List<Product> products = DatabaseMgr.getInstance().getProducts(categoryId);
+        if (products.isEmpty()) {
+            return;
+        }
+        categoryTextView.setText(products.get(0).getCategory().getCategoryName());
         prodGridView.setAdapter(new BaseAdapter() {
 
             @Override
@@ -71,18 +79,18 @@ public class ProductsFragment extends Fragment {
 
             @Override
             public View getView(int i, View view, ViewGroup viewGroup) {
-                if(view == null) {
+                if (view == null) {
                     view = LayoutInflater.from(getActivity()).inflate(R.layout.grid_product, null);
                 }
                 Product p = products.get(i);
 
-                ImageView imageView = (ImageView)view.findViewById(R.id.prodImageView);
+                ImageView imageView = (ImageView) view.findViewById(R.id.prodImageView);
                 imageView.setImageDrawable(AssetUtil.getDrawable(getActivity(), p.getImageName()));
 
-                TextView nameTextView = (TextView)view.findViewById(R.id.prodNameTextView);
+                TextView nameTextView = (TextView) view.findViewById(R.id.prodNameTextView);
                 nameTextView.setText(p.getProductName());
 
-                TextView priceTextView = (TextView)view.findViewById(R.id.prodPriceTextView);
+                TextView priceTextView = (TextView) view.findViewById(R.id.prodPriceTextView);
 
                 NumberFormat formatter = NumberFormat.getCurrencyInstance();
                 priceTextView.setText(formatter.format(p.getUnitPrice()));
@@ -92,8 +100,12 @@ public class ProductsFragment extends Fragment {
         });
     }
 
-//    @ItemClick
-//    void prodGridViewClicked(Product product) {
-//
-//    }
+    @ItemClick(R.id.prodGridView)
+    void listViewClicked(Product product) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, ProductDetailFragment.newInstance(product.getProductId()))
+                .addToBackStack(null)
+                .commit();
+    }
 }

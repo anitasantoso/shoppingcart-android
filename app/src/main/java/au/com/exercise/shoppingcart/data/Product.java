@@ -15,7 +15,7 @@ public class Product {
     @DatabaseField(columnName = "product_desc")
     private String productDesc;
 
-    @DatabaseField(foreign = true, foreignAutoCreate = true, canBeNull = false, columnName = "category_id")
+    @DatabaseField(foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true, columnName = "category_id")
     private Category category;
 
     @DatabaseField(columnName = "image_name")

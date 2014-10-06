@@ -11,8 +11,11 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
+import au.com.exercise.shoppingcart.data.ShoppingCartItem;
 import au.com.exercise.shoppingcart.data.Category;
+import au.com.exercise.shoppingcart.data.ShoppingCart;
 import au.com.exercise.shoppingcart.data.Product;
+import au.com.exercise.shoppingcart.data.User;
 
 /**
  * Created by Anita on 4/10/2014.
@@ -23,16 +26,27 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     private Dao<Product, Integer> productDao;
     private Dao<Category, Integer> categoryDao;
+    private Dao<User, Integer> userDao;
+    private Dao<ShoppingCart, Integer> shoppingCartDao;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        try {
+            productDao = getDao(Product.class);
+            categoryDao = getDao(Category.class);
+            userDao = getDao(User.class);
+            shoppingCartDao = getDao(ShoppingCart.class);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, Category.class);
-            TableUtils.createTable(connectionSource, Product.class);
+            for(Class c : new Class[]{Category.class, Product.class, User.class, ShoppingCart.class, ShoppingCartItem.class})
+                TableUtils.createTable(connectionSource, c);
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -42,8 +56,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
-            TableUtils.dropTable(connectionSource, Category.class, true);
-            TableUtils.dropTable(connectionSource, Product.class, true);
+            for(Class c : new Class[]{Category.class, Product.class, User.class, ShoppingCart.class, ShoppingCartItem.class})
+                TableUtils.dropTable(connectionSource, c, true);
 
             onCreate(db, connectionSource);
         } catch (java.sql.SQLException e) {
@@ -61,43 +75,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public Dao<Category, Integer> getCategoryDao() {
-        if(categoryDao == null) {
-            try {
-                categoryDao = getDao(Category.class);
-            } catch (java.sql.SQLException e) {
-                Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
-            }
-        }
         return categoryDao;
     }
 
     public Dao<Product, Integer> getProductDao() {
-        if(productDao == null) {
-            try {
-                productDao = getDao(Product.class);
-            } catch (java.sql.SQLException e) {
-                Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
-            }
-        }
         return productDao;
     }
 
-//
-//
-//    // TODO this is where you pre-populate table
-//    private void init(Context context) {
-//        InputStream is = context.getResources().openRawResource(R.raw.db_init);
-//        DataInputStream in = new DataInputStream(is);
-//        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//        String strLine;
-//
-//        try {
-//            while ((strLine = br.readLine()) != null) {
-//               // tableDAO.updateRaw(strLine);
-//            }
-//            in.close();
-//        } catch(Exception e) {
-//
-//        }
-//    }
+    public Dao<User, Integer> getUserDao() {
+        return userDao;
+    }
+
+    public Dao<ShoppingCart, Integer> getShoppingCartDao() {
+        return shoppingCartDao;
+    }
 }

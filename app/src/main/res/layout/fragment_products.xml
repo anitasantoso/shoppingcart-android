@@ -1,8 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="au.com.exercise.shoppingcart.fragment.ProductsFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/categoryTextView"
+        android:textColor="@android:color/white"
+        android:text=""
+        android:textSize="18sp"
+        android:padding="10dp"
+        android:gravity="center_vertical|left"
+        android:background="@color/dark_grey"/>
 
     <GridView
         android:id="@+id/prodGridView"
@@ -16,4 +28,4 @@
         android:gravity="center"
         />
 
-</FrameLayout>
+</LinearLayout>
