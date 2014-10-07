@@ -23,6 +23,7 @@ import java.util.Currency;
 import java.util.List;
 
 import au.com.exercise.shoppingcart.R;
+import au.com.exercise.shoppingcart.activity.MainActivity;
 import au.com.exercise.shoppingcart.data.Category;
 import au.com.exercise.shoppingcart.data.Product;
 import au.com.exercise.shoppingcart.db.DatabaseMgr;

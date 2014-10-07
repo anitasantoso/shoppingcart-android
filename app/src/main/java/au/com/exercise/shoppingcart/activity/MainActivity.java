@@ -21,7 +21,6 @@ import au.com.exercise.shoppingcart.db.DatabaseInitialiser;
 import au.com.exercise.shoppingcart.db.DatabaseMgr;
 import au.com.exercise.shoppingcart.fragment.NavigationDrawerFragment;
 import au.com.exercise.shoppingcart.fragment.ProductsFragment;
-import au.com.exercise.shoppingcart.fragment.ShoppingCartFragment_;
 import au.com.exercise.shoppingcart.util.CurrentUser;
 import au.com.exercise.shoppingcart.util.UserPref_;
 
@@ -33,6 +32,7 @@ public class MainActivity extends Activity
 
     @AfterViews
     void setupViews() {
+        getActionBar().setDisplayShowTitleEnabled(false);
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(
@@ -63,13 +63,11 @@ public class MainActivity extends Activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if(id == android.R.id.home) {
+            // updateActionBar();
+        }
         if (id == R.id.action_view_cart) {
             startActivity(new Intent(this, ShoppingCartActivity_.class));
-//            FragmentManager fragmentManager = getFragmentManager();
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.container, new ShoppingCartFragment_())
-//                    .addToBackStack(null)
-//                    .commit();
             return true;
         }
         return super.onOptionsItemSelected(item);

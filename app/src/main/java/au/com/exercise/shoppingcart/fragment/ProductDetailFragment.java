@@ -21,6 +21,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import java.text.NumberFormat;
 
 import au.com.exercise.shoppingcart.R;
+import au.com.exercise.shoppingcart.activity.MainActivity;
 import au.com.exercise.shoppingcart.data.Product;
 import au.com.exercise.shoppingcart.data.ShoppingCart;
 import au.com.exercise.shoppingcart.data.ShoppingCartItem;
