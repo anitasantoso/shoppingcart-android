@@ -17,11 +17,10 @@ public class CurrentUser {
     static CurrentUser instance;
     private static User user;
 
+    // load current user to memory
     public static void init(Context context) {
         if (user == null) {
-            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            String deviceId = tm.getDeviceId();
-            user = DatabaseMgr.getInstance().getUser(deviceId);
+            user = DatabaseMgr.getInstance().getUser();
         }
     }
 

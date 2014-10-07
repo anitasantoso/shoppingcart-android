@@ -29,7 +29,7 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public void addItem(ShoppingCartItem item) {
-        items.add(item);
+    public boolean addItem(ShoppingCartItem item) {
+        return items.add(item);
     }
 }

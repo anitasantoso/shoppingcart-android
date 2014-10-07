@@ -28,43 +28,10 @@ import au.com.exercise.shoppingcart.util.UserPref_;
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    @Pref
-    UserPref_ userPref;
-
     NavigationDrawerFragment mNavigationDrawerFragment;
-    boolean initError;
-
-    @AfterInject
-    void init() {
-
-        // TODO move this to LaunchActivity
-
-        // init database
-        DatabaseMgr.init(this);
-
-        if (!userPref.hasInitDb().get()) {
-            if (DatabaseInitialiser.run(this)) {
-
-                // set flag
-                userPref.edit().hasInitDb().put(true).apply();
-            } else {
-                initError = true;
-            }
-        }
-
-        // set (fake) current user
-        if(!initError) {
-            CurrentUser.init(this);
-        }
-    }
 
     @AfterViews
     void setupViews() {
-        if(initError) {
-            Toast.makeText(this, "Database initialisation error, please reinstall this app",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(

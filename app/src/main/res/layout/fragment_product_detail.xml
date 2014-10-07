@@ -5,7 +5,6 @@
     android:layout_margin="10dp"
     tools:context="au.com.exercise.shoppingcart.fragment.ProductDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -16,27 +15,48 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
+        android:layout_alignParentLeft="true"
         android:layout_below="@id/detailProdImageView">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detailProdNameTextView"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detailProdPriceTextView"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/detailProdDescTextView"
             android:paddingBottom="20dp"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/detailProdImageView">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantity" />
+    </LinearLayout>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="100dp"
+        android:id="@+id/detailQtySpinner">
+
+    </Spinner>
 
     <Button
         android:layout_width="match_parent"

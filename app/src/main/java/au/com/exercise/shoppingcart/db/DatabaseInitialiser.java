@@ -26,10 +26,7 @@ public class DatabaseInitialiser {
         Product prod5 = new Product("Chair", "This is a chair", cat2, "chair.jpg", 99.0f);
         Product prod6 = new Product("Almirah", "This is an almirah", cat2, "almirah.jpg", 420.0f);
 
-        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String deviceId = tm.getDeviceId();
-
-        User user = new User("anonymous", "Anonymous", "User", deviceId);
+        User user = new User("anonymous", "Anonymous", "User");
         ShoppingCart cart = new ShoppingCart(user);
 
         boolean success = DatabaseMgr.getInstance().addProducts(Arrays.asList(new Product[]{prod1, prod2, prod3, prod4, prod5, prod6}));

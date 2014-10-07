@@ -21,16 +21,12 @@ public class User {
     @DatabaseField(columnName = "last_name")
     private String lastName;
 
-    @DatabaseField(columnName = "device_id")
-    private String deviceId;
-
     public User() {}
 
-    public User(String username, String firstName, String lastName, String deviceId) {
+    public User(String username, String firstName, String lastName) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.deviceId = deviceId;
     }
 
     public void setUserId(int userId) {

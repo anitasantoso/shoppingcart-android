@@ -5,7 +5,9 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
+import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 import java.text.NumberFormat;
@@ -43,6 +46,9 @@ public class ProductDetailFragment extends Fragment {
     @ViewById
     TextView detailProdPriceTextView;
 
+    @ViewById
+    Spinner detailQtySpinner;
+
     Product prod;
 
     public static ProductDetailFragment newInstance(int productId) {
@@ -60,21 +66,45 @@ public class ProductDetailFragment extends Fragment {
     @AfterViews
     void setupViews() {
         prod = DatabaseMgr.getInstance().getProduct(productId);
+
+        // if null for whatever reason
         if(prod == null) {
-            // null for whatever reason
             Toast.makeText(getActivity(), "Product is currently unavailable", Toast.LENGTH_LONG).show();
             return;
         }
+
+        // populate views
         detailProdImageView.setImageDrawable(AssetUtil.getDrawable(getActivity(), prod.getImageName()));
         detailProdNameTextView.setText(prod.getProductName());
         detailProdPriceTextView.setText(NumberFormat.getCurrencyInstance().format(prod.getUnitPrice()));
         detailProdDescTextView.setText(prod.getProductDesc());
+
+        // qty dropdown
+        detailQtySpinner.setAdapter(new ArrayAdapter<Integer>(
+                getActivity(),
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1, new Integer[]{1, 2, 3, 4, 5}));
+        detailQtySpinner.performClick(); // select first item
+
     }
+
+//    @ItemClick(R.id.detailQtySpinner)
+//    void detailQtySpinnerClicked(Integer val) {
+//
+//    }
 
     @Click
     void addCartButtonClicked() {
         ShoppingCart cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
-        ShoppingCartItem item = new ShoppingCartItem(prod, 1);
-        cart.addItem(item);
+        int qty = ((Integer)detailQtySpinner.getSelectedItem()).intValue();
+        ShoppingCartItem item = new ShoppingCartItem(prod, qty);
+
+        String msg;
+        if(cart.addItem(item)) {
+            msg = "Successfully added item to cart";
+        } else {
+            msg = "Error adding item to cart";
+        }
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }

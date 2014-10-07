@@ -12,6 +12,7 @@
         android:textColor="@android:color/white"
         android:text=""
         android:textSize="18sp"
+        android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:gravity="center_vertical|left"
         android:background="@color/dark_grey"/>
@@ -20,10 +21,8 @@
         android:id="@+id/prodGridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="150dp"
+        android:columnWidth="120dp"
         android:numColumns="2"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
         />

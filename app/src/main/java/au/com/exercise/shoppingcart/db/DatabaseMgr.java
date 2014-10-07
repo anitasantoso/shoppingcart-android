@@ -82,11 +82,11 @@ public class DatabaseMgr {
         return true;
     }
 
-    public User getUser(String deviceId) {
+    public User getUser() {
         User user = null;
         try {
-            List<User> users = getHelper().getUserDao().queryForEq("device_id", deviceId);
-            if(users != null && users.size() > 0) {
+            List<User> users = getHelper().getUserDao().queryForAll();
+            if(users != null && !users.isEmpty()) {
                 user = users.get(0);
             }
         } catch (SQLException e) {
