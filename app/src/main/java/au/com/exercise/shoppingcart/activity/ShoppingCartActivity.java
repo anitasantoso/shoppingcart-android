@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 
@@ -81,6 +83,11 @@ public class ShoppingCartActivity extends Activity {
         cartItemsListView.addFooterView(footer);
 
         reloadCart();
+    }
+
+    @Click
+    void checkoutButtonClicked() {
+        Toast.makeText(this, "Not yet implemented", Toast.LENGTH_SHORT).show();
     }
 
     public void onEventMainThread(CartItemEditDialog.CartItemEditEvent event) {
@@ -150,10 +157,18 @@ public class ShoppingCartActivity extends Activity {
                 view = LayoutInflater.from(context).inflate(R.layout.row_cart_item, null);
             }
             final ShoppingCartItem item = cartItems.get(i);
-            Product p = item.getProduct();
+            final Product p = item.getProduct();
 
             ImageView imgView = (ImageView) view.findViewById(R.id.cartProdImageView);
             imgView.setImageDrawable(AssetUtil.getDrawable(context, p.getImageName()));
+            imgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, au.com.exercise.shoppingcart.activity.ProductDetailActivity_.class);
+                    intent.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, p.getProductId());
+                    startActivity(intent);
+                }
+            });
 
             TextView nameTextView = (TextView) view.findViewById(R.id.cartProdNameTextView);
             nameTextView.setText(p.getProductName());

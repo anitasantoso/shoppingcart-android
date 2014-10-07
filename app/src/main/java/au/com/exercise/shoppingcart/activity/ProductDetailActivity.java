@@ -98,8 +98,8 @@ public class ProductDetailActivity extends Activity {
             cart.addItem(item);
         } catch (ShoppingCart.MaxQtyExceededException e) {
             error = true;
-            new AlertDialog.Builder(this).setTitle("Error")
-                    .setMessage("You can only add a maximum of " + ShoppingCart.MAX_ITEM_QTY + " items")
+            new AlertDialog.Builder(this).setTitle("Error adding item")
+                    .setMessage("The maximum quantity allowed for purchase is " + ShoppingCart.MAX_ITEM_QTY)
                     .setNegativeButton("OK", null)
                     .show();
         }

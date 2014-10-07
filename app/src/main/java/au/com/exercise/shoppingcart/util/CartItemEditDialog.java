@@ -19,17 +19,13 @@ import de.greenrobot.event.EventBus;
  */
 public class CartItemEditDialog {
 
-    private static View view;
-
     public static void show(Context context, final ShoppingCartItem item) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Edit item");
 
         // set custom view
-        if(view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null);
-        }
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null);
         builder.setView(view);
 
         // configure spinner
