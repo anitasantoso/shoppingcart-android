@@ -35,8 +35,8 @@ public class CartItemEditDialog {
         final Spinner spinner = ((Spinner) view.findViewById(R.id.dialogEditQtySpinner));
         int maxQty = item.getQuantity();
         Integer[] vals = new Integer[maxQty];
-        for(int i=1; i<maxQty+1; i++) {
-            vals[i] = i;
+        for(int i=0; i<maxQty; i++) {
+            vals[i] = i+1;
         }
         spinner.setAdapter(new ArrayAdapter<Integer>(
                 context,

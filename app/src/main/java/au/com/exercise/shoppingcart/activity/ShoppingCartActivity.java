@@ -21,6 +21,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import au.com.exercise.shoppingcart.R;
@@ -44,6 +45,8 @@ public class ShoppingCartActivity extends Activity {
 
     @ViewById
     Button checkoutButton;
+
+    TextView totalPriceTextView;
 
     ShoppingCart cart;
     BaseAdapter listAdapter;
@@ -73,6 +76,10 @@ public class ShoppingCartActivity extends Activity {
         cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
         cartItems = cart.getItems();
         cartItemsListView.setAdapter(listAdapter = new CartAdapter(this));
+
+        View footer = LayoutInflater.from(this).inflate(R.layout.cart_footer, null);
+        totalPriceTextView = (TextView)footer.findViewById(R.id.totalPriceTextView);
+        cartItemsListView.addFooterView(footer);
         updateViewState();
     }
 
@@ -86,10 +93,17 @@ public class ShoppingCartActivity extends Activity {
         boolean isEmpty = cartItems == null || cartItems.isEmpty();
         emptyCartTextView.setVisibility(isEmpty? View.VISIBLE : View.GONE);
         checkoutButton.setVisibility(isEmpty? View.GONE : View.VISIBLE);
+        cartItemsListView.setVisibility(isEmpty? View.GONE : View.VISIBLE);
     }
 
     private void reloadCart() {
         cartItems = cart.getItems();
+
+        double total = 0.0;
+        for(ShoppingCartItem item : cartItems) {
+            total += item.getQuantity()*item.getProduct().getUnitPrice();
+        }
+        totalPriceTextView.setText(NumberFormat.getCurrencyInstance().format(total));
         listAdapter.notifyDataSetChanged();
         updateViewState();
     }
@@ -142,6 +156,9 @@ public class ShoppingCartActivity extends Activity {
 
             TextView qtyTextView = (TextView) view.findViewById(R.id.qtyTextView);
             qtyTextView.setText("Quantity: " + item.getQuantity());
+
+            TextView priceTextView = (TextView) view.findViewById(R.id.itemPriceTextView);
+            priceTextView.setText(NumberFormat.getCurrencyInstance().format(p.getUnitPrice()*item.getQuantity()));
 
             // edit
             Button editButton = (Button)view.findViewById(R.id.cartEditBtn);
