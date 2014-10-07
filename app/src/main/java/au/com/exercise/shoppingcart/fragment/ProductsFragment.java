@@ -1,7 +1,6 @@
 package au.com.exercise.shoppingcart.fragment;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -20,17 +18,13 @@ import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.List;
 
 import au.com.exercise.shoppingcart.R;
-import au.com.exercise.shoppingcart.activity.MainActivity;
 import au.com.exercise.shoppingcart.activity.ProductDetailActivity;
 import au.com.exercise.shoppingcart.activity.ProductDetailActivity_;
-import au.com.exercise.shoppingcart.data.Category;
 import au.com.exercise.shoppingcart.data.Product;
 import au.com.exercise.shoppingcart.db.DatabaseMgr;
-import au.com.exercise.shoppingcart.fragment.ProductsFragment_;
 import au.com.exercise.shoppingcart.util.AssetUtil;
 
 @EFragment(R.layout.fragment_products)
@@ -46,7 +40,7 @@ public class ProductsFragment extends Fragment {
     GridView prodGridView;
 
     public static ProductsFragment newInstance(int categoryId) {
-        ProductsFragment frag = new ProductsFragment_();
+        ProductsFragment frag = new au.com.exercise.shoppingcart.fragment.ProductsFragment_();
         Bundle b = new Bundle();
         b.putInt("categoryId", categoryId);
         frag.setArguments(b);

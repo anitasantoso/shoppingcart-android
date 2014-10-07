@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 import java.text.NumberFormat;
+import java.util.Collections;
 import java.util.List;
 
 import au.com.exercise.shoppingcart.R;
@@ -73,14 +72,15 @@ public class ShoppingCartActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setTitle("Shopping Cart");
 
+        cartItems = Collections.EMPTY_LIST;
         cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
-        cartItems = cart.getItems();
         cartItemsListView.setAdapter(listAdapter = new CartAdapter(this));
 
         View footer = LayoutInflater.from(this).inflate(R.layout.cart_footer, null);
         totalPriceTextView = (TextView)footer.findViewById(R.id.totalPriceTextView);
         cartItemsListView.addFooterView(footer);
-        updateViewState();
+
+        reloadCart();
     }
 
     public void onEventMainThread(CartItemEditDialog.CartItemEditEvent event) {
@@ -98,14 +98,18 @@ public class ShoppingCartActivity extends Activity {
 
     private void reloadCart() {
         cartItems = cart.getItems();
+        listAdapter.notifyDataSetChanged();
 
+        updateViewState();
+        updateTotalPrice();
+    }
+
+    private void updateTotalPrice() {
         double total = 0.0;
         for(ShoppingCartItem item : cartItems) {
             total += item.getQuantity()*item.getProduct().getUnitPrice();
         }
         totalPriceTextView.setText(NumberFormat.getCurrencyInstance().format(total));
-        listAdapter.notifyDataSetChanged();
-        updateViewState();
     }
 
     @Override

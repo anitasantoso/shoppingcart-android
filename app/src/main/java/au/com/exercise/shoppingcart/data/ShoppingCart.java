@@ -17,6 +17,8 @@ import au.com.exercise.shoppingcart.db.DatabaseMgr;
 @DatabaseTable
 public class ShoppingCart {
 
+    public static final int MAX_ITEM_QTY = 10;
+
     @DatabaseField(generatedId = true, canBeNull = false, columnName = "cart_id")
     private int cartId;
 
@@ -33,7 +35,7 @@ public class ShoppingCart {
         this.user = user;
     }
 
-    public void addItem(ShoppingCartItem item) {
+    public void addItem(ShoppingCartItem item) throws MaxQtyExceededException {
 
         boolean found = false;
 
@@ -42,7 +44,11 @@ public class ShoppingCart {
             if (i.getProduct().getProductId() == item.getProduct().getProductId()) {
 
                 // update quantity
-                i.setQuantity(i.getQuantity() + item.getQuantity());
+                int totalQty = i.getQuantity() + item.getQuantity();
+                if(totalQty > MAX_ITEM_QTY) {
+                    throw new MaxQtyExceededException();
+                }
+                i.setQuantity(totalQty);
                 try {
                     items.update(i);
                 } catch (Exception e) {
@@ -85,4 +91,6 @@ public class ShoppingCart {
     public List<ShoppingCartItem> getItems() {
         return items != null ? new ArrayList<ShoppingCartItem>(items) : Collections.EMPTY_LIST;
     }
+
+    public class MaxQtyExceededException extends Exception {}
 }

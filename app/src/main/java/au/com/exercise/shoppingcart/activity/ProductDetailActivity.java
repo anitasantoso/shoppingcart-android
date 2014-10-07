@@ -1,8 +1,7 @@
 package au.com.exercise.shoppingcart.activity;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.Menu;
+import android.app.AlertDialog;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Extra;
-import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 import java.text.NumberFormat;
@@ -76,24 +74,38 @@ public class ProductDetailActivity extends Activity {
         detailProdDescTextView.setText(prod.getProductDesc());
 
         // qty dropdown
+        Integer[] vals = new Integer[ShoppingCart.MAX_ITEM_QTY];
+        for(int i=0; i< ShoppingCart.MAX_ITEM_QTY; i++) {
+            vals[i] = i+1;
+        }
         detailQtySpinner.setAdapter(new ArrayAdapter<Integer>(
                 this,
                 android.R.layout.simple_list_item_1,
-                android.R.id.text1, new Integer[]{1, 2, 3, 4, 5}));
+                android.R.id.text1, vals));
         detailQtySpinner.setSelection(0);
     }
 
     @Click
     void addCartButtonClicked() {
         ShoppingCart cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
-        if(cart == null) {
-            return;
-        }
+        assert(cart != null);
+
         int qty = ((Integer)detailQtySpinner.getSelectedItem()).intValue();
         ShoppingCartItem item = new ShoppingCartItem(prod, qty);
 
-        cart.addItem(item);
-        Toast.makeText(this, "Item has been added to cart", Toast.LENGTH_LONG).show();
+        boolean error = false;
+        try {
+            cart.addItem(item);
+        } catch (ShoppingCart.MaxQtyExceededException e) {
+            error = true;
+            new AlertDialog.Builder(this).setTitle("Error")
+                    .setMessage("You can only add a maximum of " + ShoppingCart.MAX_ITEM_QTY + " items")
+                    .setNegativeButton("OK", null)
+                    .show();
+        }
+        if(!error) {
+            Toast.makeText(this, "Item has been added to cart", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

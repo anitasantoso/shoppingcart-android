@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import au.com.exercise.shoppingcart.R;
+import au.com.exercise.shoppingcart.data.ShoppingCart;
 import au.com.exercise.shoppingcart.data.ShoppingCartItem;
 import de.greenrobot.event.EventBus;
 
@@ -33,9 +34,8 @@ public class CartItemEditDialog {
 
         // configure spinner
         final Spinner spinner = ((Spinner) view.findViewById(R.id.dialogEditQtySpinner));
-        int maxQty = item.getQuantity();
-        Integer[] vals = new Integer[maxQty];
-        for(int i=0; i<maxQty; i++) {
+        Integer[] vals = new Integer[ShoppingCart.MAX_ITEM_QTY];
+        for(int i=0; i< ShoppingCart.MAX_ITEM_QTY; i++) {
             vals[i] = i+1;
         }
         spinner.setAdapter(new ArrayAdapter<Integer>(
