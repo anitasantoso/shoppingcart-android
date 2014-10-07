@@ -28,7 +28,6 @@ public class LaunchActivity extends Activity {
 
                 // set flag
                 userPref.edit().hasInitDb().put(true).apply();
-                CurrentUser.init(this);
 
                 showMainActivity();
             }

@@ -2,6 +2,7 @@ package au.com.exercise.shoppingcart.activity;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,10 +64,12 @@ public class MainActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_view_cart) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, new ShoppingCartFragment_())
-                    .commit();
+            startActivity(new Intent(this, ShoppingCartActivity_.class));
+//            FragmentManager fragmentManager = getFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.container, new ShoppingCartFragment_())
+//                    .addToBackStack(null)
+//                    .commit();
             return true;
         }
         return super.onOptionsItemSelected(item);

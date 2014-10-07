@@ -13,5 +13,6 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_launch">LaunchActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_shopping_cart">ShoppingCartActivity</string>
 
 </resources>

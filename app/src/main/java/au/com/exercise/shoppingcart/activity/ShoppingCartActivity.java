@@ -1,9 +1,13 @@
-package au.com.exercise.shoppingcart.fragment;
+package au.com.exercise.shoppingcart.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EFragment;
+import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -29,8 +33,8 @@ import au.com.exercise.shoppingcart.util.CartItemEditDialog;
 import au.com.exercise.shoppingcart.util.CurrentUser;
 import de.greenrobot.event.EventBus;
 
-@EFragment(R.layout.fragment_shopping_cart)
-public class ShoppingCartFragment extends Fragment {
+@EActivity(R.layout.activity_shopping_cart)
+public class ShoppingCartActivity extends Activity {
 
     @ViewById
     ListView cartItemsListView;
@@ -45,7 +49,7 @@ public class ShoppingCartFragment extends Fragment {
     BaseAdapter listAdapter;
     List<ShoppingCartItem> cartItems;
 
-    public ShoppingCartFragment() {
+    public ShoppingCartActivity() {
         // Required empty public constructor
     }
 
@@ -63,9 +67,12 @@ public class ShoppingCartFragment extends Fragment {
 
     @AfterViews
     void setupViews() {
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowTitleEnabled(false);
+
         cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
         cartItems = cart.getItems();
-        cartItemsListView.setAdapter(listAdapter = new CartAdapter());
+        cartItemsListView.setAdapter(listAdapter = new CartAdapter(this));
         updateViewState();
     }
 
@@ -87,7 +94,22 @@ public class ShoppingCartFragment extends Fragment {
         updateViewState();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     class CartAdapter extends BaseAdapter {
+        Context context;
+
+        CartAdapter(Context context) {
+            this.context = context;
+        }
 
         @Override
         public int getCount() {
@@ -107,13 +129,13 @@ public class ShoppingCartFragment extends Fragment {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             if (view == null) {
-                view = LayoutInflater.from(getActivity()).inflate(R.layout.row_cart_item, null);
+                view = LayoutInflater.from(context).inflate(R.layout.row_cart_item, null);
             }
             final ShoppingCartItem item = cartItems.get(i);
             Product p = item.getProduct();
 
             ImageView imgView = (ImageView) view.findViewById(R.id.cartProdImageView);
-            imgView.setImageDrawable(AssetUtil.getDrawable(getActivity(), p.getImageName()));
+            imgView.setImageDrawable(AssetUtil.getDrawable(context, p.getImageName()));
 
             TextView nameTextView = (TextView) view.findViewById(R.id.cartProdNameTextView);
             nameTextView.setText(p.getProductName());
@@ -126,7 +148,7 @@ public class ShoppingCartFragment extends Fragment {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CartItemEditDialog.show(getActivity(), item);
+                    CartItemEditDialog.show(context, item);
                 }
             });
 
@@ -138,7 +160,7 @@ public class ShoppingCartFragment extends Fragment {
                 public void onClick(View view) {
 
                     // confirmation
-                    new AlertDialog.Builder(getActivity()).setMessage("Are you sure you want to remove selected item?")
+                    new AlertDialog.Builder(context).setMessage("Are you sure you want to remove selected item?")
                             .setTitle("Delete Item")
                             .setNegativeButton("Cancel", null)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -146,7 +168,7 @@ public class ShoppingCartFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     cart.remove(item);
                                     reloadCart();
-                                    Toast.makeText(getActivity(), "Item has been removed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Item has been removed", Toast.LENGTH_SHORT).show();
                                 }
                             }).show();
 

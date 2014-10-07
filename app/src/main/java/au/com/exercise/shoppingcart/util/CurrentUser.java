@@ -18,13 +18,10 @@ public class CurrentUser {
     private static User user;
 
     // load current user to memory
-    public static void init(Context context) {
+    public static User getUser() {
         if (user == null) {
             user = DatabaseMgr.getInstance().getUser();
         }
-    }
-
-    public static User getUser() {
         return  user;
     }
 }

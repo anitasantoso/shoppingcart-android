@@ -82,29 +82,21 @@ public class ProductDetailFragment extends Fragment {
         // qty dropdown
         detailQtySpinner.setAdapter(new ArrayAdapter<Integer>(
                 getActivity(),
-                android.R.layout.simple_list_item_activated_1,
+                android.R.layout.simple_list_item_1,
                 android.R.id.text1, new Integer[]{1, 2, 3, 4, 5}));
-        detailQtySpinner.performClick(); // select first item
-
+        detailQtySpinner.setSelection(0);
     }
-
-//    @ItemClick(R.id.detailQtySpinner)
-//    void detailQtySpinnerClicked(Integer val) {
-//
-//    }
 
     @Click
     void addCartButtonClicked() {
         ShoppingCart cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
+        if(cart == null) {
+            return;
+        }
         int qty = ((Integer)detailQtySpinner.getSelectedItem()).intValue();
         ShoppingCartItem item = new ShoppingCartItem(prod, qty);
 
-        String msg;
-        if(cart.addItem(item)) {
-            msg = "Successfully added item to cart";
-        } else {
-            msg = "Error adding item to cart";
-        }
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+        cart.addItem(item);
+        Toast.makeText(getActivity(), "Item has been added to cart", Toast.LENGTH_LONG).show();
     }
 }

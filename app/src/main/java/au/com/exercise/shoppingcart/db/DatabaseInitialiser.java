@@ -18,7 +18,7 @@ public class DatabaseInitialiser {
     public static boolean run(Context context) {
         Category cat = new Category("Electronics");
         Product prod1 = new Product("Microwave Oven", "This is a microwave oven", cat, "microwave_oven.jpg", 120.0f);
-        Product prod2 = new Product("Television", "This is a television", cat, "television.jpg", 1223.0f);
+        Product prod2 = new Product("Television", "See more on TV than ever before with over 8 million individual pixels (3,840 x 2,160) compared to about 2 million (1,920 x 1,080) on your current HDTV1. Advanced picture processing also ensures that each of those pixels displays images with superb brightness and authentic detail. It's the highest resolution picture Sony has ever produced on a TV.", cat, "television.jpg", 1223.0f);
         Product prod3 = new Product("Vacuum Cleaner", "This is a vacuum cleaner", cat, "vacuum_cleaner.jpg", 345.0f);
 
         Category cat2 = new Category("Furniture");
