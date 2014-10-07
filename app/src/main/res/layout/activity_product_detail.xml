@@ -36,7 +36,7 @@
                 style="@style/CurrencyText"
                 android:id="@+id/detailProdPriceTextView"
                 android:layout_below="@id/detailProdNameTextView"
-                 />
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -28,15 +28,20 @@ public class CartItemEditDialog {
         // set custom view
         if(view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null);
-            Spinner spinner = (Spinner) view.findViewById(R.id.dialogEditQtySpinner);
-            spinner.setAdapter(new ArrayAdapter<Integer>(
-                    context,
-                    android.R.layout.simple_list_item_1,
-                    android.R.id.text1, new Integer[]{1, 2, 3, 4, 5}));
         }
         builder.setView(view);
 
+        // configure spinner
         final Spinner spinner = ((Spinner) view.findViewById(R.id.dialogEditQtySpinner));
+        int maxQty = item.getQuantity();
+        Integer[] vals = new Integer[maxQty];
+        for(int i=1; i<maxQty+1; i++) {
+            vals[i] = i;
+        }
+        spinner.setAdapter(new ArrayAdapter<Integer>(
+                context,
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1, vals));
         spinner.setSelection(item.getQuantity() - 1); // preselect
 
         builder.setNegativeButton("Cancel", null);
@@ -54,6 +59,7 @@ public class CartItemEditDialog {
 
     public static class CartItemEditEvent {
         public ShoppingCartItem item;
+
         CartItemEditEvent(ShoppingCartItem item) {
             this.item = item;
         }

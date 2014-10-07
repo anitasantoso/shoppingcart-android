@@ -68,7 +68,7 @@ public class ShoppingCartActivity extends Activity {
     @AfterViews
     void setupViews() {
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setDisplayShowTitleEnabled(false);
+        getActionBar().setTitle("Shopping Cart");
 
         cart = DatabaseMgr.getInstance().getShoppingCart(CurrentUser.getUser());
         cartItems = cart.getItems();
@@ -141,7 +141,7 @@ public class ShoppingCartActivity extends Activity {
             nameTextView.setText(p.getProductName());
 
             TextView qtyTextView = (TextView) view.findViewById(R.id.qtyTextView);
-            qtyTextView.setText("Qty: " + item.getQuantity());
+            qtyTextView.setText("Quantity: " + item.getQuantity());
 
             // edit
             Button editButton = (Button)view.findViewById(R.id.cartEditBtn);

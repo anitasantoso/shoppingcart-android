@@ -2,6 +2,7 @@ package au.com.exercise.shoppingcart.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ import java.util.List;
 
 import au.com.exercise.shoppingcart.R;
 import au.com.exercise.shoppingcart.activity.MainActivity;
+import au.com.exercise.shoppingcart.activity.ProductDetailActivity;
+import au.com.exercise.shoppingcart.activity.ProductDetailActivity_;
 import au.com.exercise.shoppingcart.data.Category;
 import au.com.exercise.shoppingcart.data.Product;
 import au.com.exercise.shoppingcart.db.DatabaseMgr;
@@ -103,10 +106,8 @@ public class ProductsFragment extends Fragment {
 
     @ItemClick(R.id.prodGridView)
     void listViewClicked(Product product) {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, ProductDetailFragment.newInstance(product.getProductId()))
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(getActivity(), ProductDetailActivity_.class);
+        intent.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.getProductId());
+        startActivity(intent);
     }
 }
