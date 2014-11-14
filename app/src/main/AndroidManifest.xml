@@ -9,7 +9,6 @@
         <activity android:name="au.com.exercise.shoppingcart.activity.LaunchActivity_" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
